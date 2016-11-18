@@ -442,7 +442,7 @@ var resizePizzas = function(size) {
         console.log('bug is found');
     }
 
-    var randomPizzas = document.querySelectorAll('.randomPizzaContainer');
+    var randomPizzas = document.getElementByClassName('.randomPizzaContainer');
     for (var i = 0; i < randomPizzas.length; i++) {
       randomPizzas[i].style.width = newWidth+'%';
     }
@@ -462,9 +462,10 @@ var resizePizzas = function(size) {
 
 window.performance.mark("mark_start_generating"); // collect timing data
 
+
 // This for-loop actually creates and appends all of the pizzas when the page loads
-for (var i = 2; i < 100; i++) {
   var pizzasDiv = document.getElementById("randomPizzas");
+for (var i = 2; i < 100; i++) {
   pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
 
@@ -498,10 +499,18 @@ function updatePositions() {
 
   var items = document.querySelectorAll('.mover');
   //removed the calculation of width to outside the loop to eliminate FSL.
-  var marv=  Math.sin((document.body.scrollTop / 1250));
+
+  var phase = [];
+
+  for (var i = 0; i < 5; i++) {
+      phase.push(Math.sin(document.body.scrollTop / 1250 + i) * 100);
+  }
+
+
+//  var marv=  Math.sin((document.body.scrollTop / 1250));
   for (var i = 0; i < items.length; i++) {
-    var phase = marv + (i % 5);
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    //var phase = marv + (i % 5);
+    items[i].style.left = items[i].basicLeft + phase[i%5] + 'px';
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -521,7 +530,11 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  var rows = Math.floor( window.innerHeight/s);
+  var pizzaCount= rows*cols;
+  var pizzaSelector= document.querySelector("#movingPizzas1");
+
+  for (var i = 0; i < pizzaCount; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
@@ -529,7 +542,7 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.width = "73.333px";
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.querySelector("#movingPizzas1").appendChild(elem);
+    pizzaSelector.appendChild(elem);
   }
   updatePositions();
 });
