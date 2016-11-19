@@ -24,8 +24,11 @@
 ### To achieve 60fps:
 
 * Moved `Math.sin((document.body.scrollTop / 1250))` outside the **for loop** to eliminate the Forced synchronous bottleneck.
+* Used **pizzaCount** variable to calculate the number of pizzas based on screen size using `window.innerHeight`.
+* Replaced `.querySelector()` with `.getElementById()` to increase performance.
 
 ### To resize pizzas within 5ms:
 
 * Removed `Determinedx` function from the main.js.
-* Altered the **Switch function** to change the width directly in `ChangePizzaSizes()` function to eliminate Forced Synchronous bottleneck.  
+* Altered the **Switch function** to change the width directly in `ChangePizzaSizes()` function to eliminate Forced Synchronous bottleneck.
+* Created a **pizzaDiv** variable to get the ID of the element outside instead of calling it in a for-loop.   
